@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import filesDifferences from '../src/filesDifferences';
+import filesDifferencesPresentation from '../src/filesDifferencesPresentation.js';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -19,6 +19,6 @@ test.each(fileExtensions)(
     const oldFilePath = getOldFilePath(ext);
     const newFilePath = getNewFilePath(ext);
 
-    expect(filesDifferences(oldFilePath, newFilePath)).toBe(readFileSync(resultPath, 'utf8'));
+    expect(filesDifferencesPresentation(oldFilePath, newFilePath)).toBe(readFileSync(resultPath, 'utf8'));
   },
 );

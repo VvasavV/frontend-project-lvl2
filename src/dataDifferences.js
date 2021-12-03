@@ -3,42 +3,24 @@ import _ from 'lodash';
 const dataDifferences = (data1, data2) => {
   const keys1 = _.keys(data1);
   const keys2 = _.keys(data2);
+
   const keys = _.union(keys1, keys2);
 
-  const getRecordComparisonResult = (key) => {
-    if (!_.has(data1, key)) {
-      return 'added';
-    }
-    if (!_.has(data2, key)) {
-      return 'deleted';
-    }
-    if (data1[key] === data2[key]) {
-      return 'unchanged';
-    }
-    return 'changed';
-  };
-
-  const getKeyValueString = (key, obj) => `${key}: ${_.get(obj, key)}`;
-  const getAddedString = (key) => `+ ${getKeyValueString(key, data2)}`;
-  const getDeletedString = (key) => `- ${getKeyValueString(key, data1)}`;
-  const getUnchangedString = (key) => `  ${getKeyValueString(key, data1)}`;
-
-  return keys
-    .map((key) => [key, getRecordComparisonResult(key)])
-    .sort()
-    .reduce((acc, [key, comparisonResult]) => {
-      switch (comparisonResult) {
-        case 'added':
-          return [...acc, getAddedString(key)];
-        case 'deleted':
-          return [...acc, getDeletedString(key)];
-        case 'changed':
-          return [...acc, getDeletedString(key), getAddedString(key)];
-        default:
-          return [...acc, getUnchangedString(key)];
+  const diffs = keys
+    .reduce((acc, key) => {
+      if (!_.has(data1, key)) {
+        return [...acc, { key, status: 'added', value: data2[key] }];
       }
-    }, [])
-    .join('\n');
+      if (!_.has(data2, key)) {
+        return [...acc, { key, status: 'deleted', value: data1[key] }];
+      }
+      if (data1[key] === data2[key]) {
+        return [...acc, { key, status: 'unchanged', value: data1[key] }];
+      }
+      return [...acc, { key, status: 'deleted', value: data1[key] }, { key, status: 'added', value: data2[key] }];
+    }, []);
+
+  return _.sortBy(diffs, ['key']);
 };
 
 export default dataDifferences;
