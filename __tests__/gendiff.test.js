@@ -6,10 +6,19 @@ import compareJson from '../src/compareJson';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const file1Path = path.resolve(dirname, '__fixtures__/file1.json');
-const file2Path = path.resolve(dirname, '__fixtures__/file2.json');
+const fileExtensions = ['json', 'yml'];
+
+const getOldFilePath = (ext) => path.resolve(dirname, `__fixtures__/file1.${ext}`);
+const getNewFilePath = (ext) => path.resolve(dirname, `__fixtures__/file2.${ext}`);
+
 const resultPath = path.resolve(dirname, '__fixtures__/result.txt');
 
-test('compareJson', () => {
-  expect(compareJson(file1Path, file2Path)).toBe(readFileSync(resultPath, 'utf8'));
-});
+test.each(fileExtensions)(
+  'compareJson',
+  (ext) => {
+    const oldFilePath = getOldFilePath(ext);
+    const newFilePath = getNewFilePath(ext);
+
+    expect(compareJson(oldFilePath, newFilePath)).toBe(readFileSync(resultPath, 'utf8'));
+  },
+);
