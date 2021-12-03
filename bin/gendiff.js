@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import commander from 'commander';
-import compareJson from '../src/compareJson.js';
+import filesDifferences from '../src/filesDifferences.js';
 
 const program = commander
   .version('0.0.1')
@@ -10,7 +10,7 @@ const program = commander
   .argument('<filepath1>')
   .argument('<filepath2>')
   .action((filepath1, filepath2) => {
-    const result = compareJson(filepath1, filepath2);
+    const result = filesDifferences(filepath1, filepath2);
     console.log(result);
   });
 

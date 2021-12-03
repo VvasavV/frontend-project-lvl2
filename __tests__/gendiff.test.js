@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import compareJson from '../src/compareJson';
+import filesDifferences from '../src/filesDifferences';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -14,11 +14,11 @@ const getNewFilePath = (ext) => path.resolve(dirname, `__fixtures__/file2.${ext}
 const resultPath = path.resolve(dirname, '__fixtures__/result.txt');
 
 test.each(fileExtensions)(
-  'compareJson',
+  'compareFiles',
   (ext) => {
     const oldFilePath = getOldFilePath(ext);
     const newFilePath = getNewFilePath(ext);
 
-    expect(compareJson(oldFilePath, newFilePath)).toBe(readFileSync(resultPath, 'utf8'));
+    expect(filesDifferences(oldFilePath, newFilePath)).toBe(readFileSync(resultPath, 'utf8'));
   },
 );

@@ -1,9 +1,6 @@
-import { readFileSync } from 'fs';
-import * as path from 'path';
 import _ from 'lodash';
-import parse from './parsers.js';
 
-const getDifferences = (data1, data2) => {
+const dataDifferences = (data1, data2) => {
   const keys1 = _.keys(data1);
   const keys2 = _.keys(data2);
   const keys = _.union(keys1, keys2);
@@ -44,22 +41,4 @@ const getDifferences = (data1, data2) => {
     .join('\n');
 };
 
-const compareFiles = (filepath1, filepath2) => {
-  const fullPath1 = path.resolve(filepath1);
-  const fullPath2 = path.resolve(filepath2);
-
-  const fileContent1 = readFileSync(fullPath1);
-  const fileContent2 = readFileSync(fullPath2);
-
-  const extnameWithoutDot = (filePath) => path.extname(filePath).substring(1);
-
-  const ext1 = extnameWithoutDot(filepath1);
-  const ext2 = extnameWithoutDot(filepath2);
-
-  const dataOld = parse(fileContent1, ext1);
-  const dataNew = parse(fileContent2, ext2);
-
-  return getDifferences(dataOld, dataNew);
-};
-
-export default compareFiles;
+export default dataDifferences;
