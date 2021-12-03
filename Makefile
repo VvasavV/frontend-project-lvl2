@@ -17,4 +17,4 @@ lint-fix:
 	npx eslint . --fix
 
 gendiff:
-	node bin/gendiff.js fixtures/file1.json fixtures/file2.json
+	node bin/gendiff.js __tests__/__fixtures__/file1.json __tests__/__fixtures__/file2.json
