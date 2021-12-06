@@ -19,6 +19,9 @@ test.each(fileExtensions)(
     const oldFilePath = getOldFilePath(ext);
     const newFilePath = getNewFilePath(ext);
 
-    expect(filesDifferencesPresentation(oldFilePath, newFilePath)).toBe(readFileSync(resultPath, 'utf8'));
+    const actual = filesDifferencesPresentation(oldFilePath, newFilePath);
+    const expected = readFileSync(resultPath, 'utf8');
+
+    expect(actual).toBe(expected);
   },
 );

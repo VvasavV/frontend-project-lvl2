@@ -8,16 +8,45 @@ const dataDifferences = (data1, data2) => {
 
   const diffs = keys
     .reduce((acc, key) => {
-      if (!_.has(data1, key)) {
-        return [...acc, { key, status: 'added', value: data2[key] }];
+      const value1 = data1[key];
+      const value2 = data2[key];
+
+      const added = {
+        key,
+        status: 'added',
+        type: value2 instanceof Object ? 'object' : 'value',
+        value: value2 instanceof Object ? dataDifferences(value2, value2) : value2,
+      };
+
+      const deleted = {
+        key,
+        status: 'deleted',
+        type: value1 instanceof Object ? 'object' : 'value',
+        value: value1 instanceof Object ? dataDifferences(value1, value1) : value1,
+      };
+
+      const unchanged = {
+        key,
+        status: 'unchanged',
+        type: value1 instanceof Object && value2 instanceof Object ? 'object' : 'value',
+        value: value1 instanceof Object && value2 instanceof Object
+          ? dataDifferences(value1, value2)
+          : value1,
+      };
+
+      const has1 = _.has(data1, key);
+      const has2 = _.has(data2, key);
+
+      if ((value1 instanceof Object && value2 instanceof Object) || value1 === value2) {
+        return [...acc, unchanged];
       }
-      if (!_.has(data2, key)) {
-        return [...acc, { key, status: 'deleted', value: data1[key] }];
+      if (!has2) {
+        return [...acc, deleted];
       }
-      if (data1[key] === data2[key]) {
-        return [...acc, { key, status: 'unchanged', value: data1[key] }];
+      if (!has1) {
+        return [...acc, added];
       }
-      return [...acc, { key, status: 'deleted', value: data1[key] }, { key, status: 'added', value: data2[key] }];
+      return [...acc, deleted, added];
     }, []);
 
   return _.sortBy(diffs, ['key']);

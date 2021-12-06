@@ -1,6 +1,6 @@
-import dataDifferences from './dataDifferences.js';
+const dataDifferencesPresentation = (differences) => {
+  const getReplacers = (depth) => '  '.repeat(depth);
 
-const dataDifferencesPresentation = (data1, data2) => {
   const statusPrefix = (status) => {
     switch (status) {
       case 'deleted':
@@ -12,12 +12,22 @@ const dataDifferencesPresentation = (data1, data2) => {
     }
   };
 
-  const diffStrings = dataDifferences(data1, data2)
-    .map((diff) => `${statusPrefix(diff.status)}${diff.key}: ${diff.value}`)
-    .map((str) => `${' '.repeat(2)}${str}`)
-    .join('\n');
+  const diffStrings = (diffs, depth) => {
+    const replacersBeforeDiff = getReplacers(depth);
+    const replacersBeforeCloseBracket = getReplacers(depth - 1);
 
-  return `{\n${diffStrings}\n}`;
+    const lines = diffs
+      .map((diff) => {
+        const status = statusPrefix(diff.status);
+        const value = (diff.type !== 'object' ? diff.value : `${diffStrings(diff.value, depth + 2)}`);
+
+        return `${replacersBeforeDiff}${status}${diff.key}: ${value}`;
+      });
+
+    return ['{', ...lines, `${replacersBeforeCloseBracket}}`].join('\n');
+  };
+
+  return diffStrings(differences, 1);
 };
 
 export default dataDifferencesPresentation;
