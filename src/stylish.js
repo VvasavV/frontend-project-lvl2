@@ -1,4 +1,4 @@
-const dataDifferencesPresentation = (differences) => {
+const stylish = (differences) => {
   const getReplacers = (depth) => '  '.repeat(depth);
 
   const statusPrefix = (status) => {
@@ -30,4 +30,4 @@ const dataDifferencesPresentation = (differences) => {
   return diffStrings(differences, 1);
 };
 
-export default dataDifferencesPresentation;
+export default stylish;
