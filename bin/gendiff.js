@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
 import commander from 'commander';
-import parseFile from '../src/parseFile.js';
-import dataDifferences from '../src/dataDifferences.js';
-import render from '../src/formatters/index.js';
+import generateDifferences from '../src/generateDifferences.js';
 
 const program = commander
   .version('0.0.1')
@@ -12,11 +10,7 @@ const program = commander
   .argument('<filepath1>')
   .argument('<filepath2>')
   .action((filepath1, filepath2) => {
-    const dataOld = parseFile(filepath1);
-    const dataNew = parseFile(filepath2);
-
-    const differences = dataDifferences(dataOld, dataNew);
-    const result = render(differences, program.opts().format);
+    const result = generateDifferences(filepath1, filepath2, program.opts().format);
 
     console.log(result);
   });

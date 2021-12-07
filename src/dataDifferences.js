@@ -34,6 +34,12 @@ const dataDifferences = (data1, data2) => {
           : value1,
       };
 
+      const updated = {
+        key,
+        status: 'updated',
+        value: { added, deleted },
+      };
+
       const has1 = _.has(data1, key);
       const has2 = _.has(data2, key);
 
@@ -46,7 +52,7 @@ const dataDifferences = (data1, data2) => {
       if (!has1) {
         return [...acc, added];
       }
-      return [...acc, deleted, added];
+      return [...acc, updated];
     }, []);
 
   return _.sortBy(diffs, ['key']);

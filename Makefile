@@ -18,3 +18,6 @@ lint-fix:
 
 gendiff:
 	node bin/gendiff.js __tests__/__fixtures__/file1.json __tests__/__fixtures__/file2.json
+
+gendiff-plain:
+	node bin/gendiff.js -f plain __tests__/__fixtures__/file1.json __tests__/__fixtures__/file2.json

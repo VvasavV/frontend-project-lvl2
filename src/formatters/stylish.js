@@ -17,6 +17,7 @@ const stylish = (differences) => {
     const replacersBeforeCloseBracket = getReplacers(depth - 1);
 
     const lines = diffs
+      .reduce((acc, diff) => (diff.status === 'updated' ? [...acc, diff.value.deleted, diff.value.added] : [...acc, diff]), [])
       .map((diff) => {
         const status = statusPrefix(diff.status);
         const value = (diff.type !== 'object' ? diff.value : `${diffStrings(diff.value, depth + 2)}`);
