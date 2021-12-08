@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import generateDifferences from '../src/generateDifferences';
 
 const fileExtensions = ['json', 'yml'];
-const formats = ['stylish', 'plain'];
+const formats = ['stylish', 'plain', 'json'];
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);

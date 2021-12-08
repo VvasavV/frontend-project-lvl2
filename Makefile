@@ -21,3 +21,6 @@ gendiff:
 
 gendiff-plain:
 	node bin/gendiff.js -f plain __tests__/__fixtures__/file1.json __tests__/__fixtures__/file2.json
+
+gendiff-json:
+	node bin/gendiff.js -f json __tests__/__fixtures__/file1.json __tests__/__fixtures__/file2.json
